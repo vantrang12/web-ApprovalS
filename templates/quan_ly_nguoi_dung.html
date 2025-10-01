@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Quản lý Người dùng{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Danh sách Người dùng</h2>
+        <a href="{{ url_for('edit_user', id=0) }}" class="btn btn-primary">Thêm Người dùng mới</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tên tài khoản</th>
+                <th>Tổ chức</th>
+                <th>Loại quyền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.org_name or 'N/A' }}</td>
+                <td>{{ user.role }}</td>
+                <td style="display: flex; gap: 5px;">
+                    <a href="{{ url_for('edit_user', id=user.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                    {% if user.username != 'admin' %}
+                    <form action="{{ url_for('delete_user', id=user.id) }}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');" style="margin:0;">
+                        <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

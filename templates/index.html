@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Danh sách Phiếu trình{% endblock %}
+
+{% block content %}
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Danh sách Phiếu trình</h2>
+        <a href="{{ url_for('tao_phieu_trinh') }}" class="btn btn-primary">Tạo Phiếu trình mới</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nội dung trình</th>
+                <th>Tổ chức</th>
+                <th>Người tạo</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in submissions %}
+            <tr>
+                <td>{{ s.id }}</td>
+                <td><a href="{{ url_for('phieu_trinh_chi_tiet', id=s.id) }}">{{ s.content[:80] }}{{ '...' if s.content|length > 80 }}</a></td>
+                <td>{{ s.org_name }}</td>
+                <td>{{ s.creator_name }}</td>
+                <td>
+                    {% if s.status == 'Chờ phê duyệt' %}
+                        <span class="status status-pending">{{ s.status }}</span>
+                    {% elif s.status == 'Đã phê duyệt' %}
+                        <span class="status status-approved">{{ s.status }}</span>
+                    {% elif s.status == 'Đã từ chối' %}
+                        <span class="status status-rejected">{{ s.status }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Chưa có phiếu trình nào.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

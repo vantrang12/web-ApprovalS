@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Quản lý Tổ chức{% endblock %}
+
+{% block content %}
+    <h2>Quản lý Tổ chức</h2>
+    <hr>
+
+    <h4>Thêm Tổ chức mới</h4>
+    <form method="post" style="flex-direction: row; gap: 10px; align-items: flex-end; margin-bottom: 30px;">
+        <input type="hidden" name="action" value="add">
+        <div class="form-group" style="flex-grow: 1;">
+            <label for="name">Tên tổ chức</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm</button>
+    </form>
+
+    <h4>Danh sách Tổ chức hiện có</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Tổ chức</th>
+                <th style="width: 200px;">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for org in organizations %}
+            <tr>
+                <td>{{ org.id }}</td>
+                <form method="post">
+                    <input type="hidden" name="action" value="edit">
+                    <input type="hidden" name="id" value="{{ org.id }}">
+                    <td>
+                        <input type="text" name="name" class="form-control" value="{{ org.name }}">
+                    </td>
+                    <td style="display: flex; gap: 5px;">
+                        <button type="submit" class="btn btn-sm btn-primary">Lưu</button>
+                </form>
+                <form method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tổ chức này?');">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="id" value="{{ org.id }}">
+                    <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" style="text-align: center;">Chưa có tổ chức nào.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

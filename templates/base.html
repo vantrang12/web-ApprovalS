@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hệ thống Approval{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if session['user_id'] %}
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}" class="brand">Approval</a>
+            <a href="{{ url_for('index') }}">Danh sách Phiếu trình</a>
+            {% if session['role'] == 'admin' %}
+                <a href="{{ url_for('quan_ly_nguoi_dung') }}">Quản lý Người dùng</a>
+                <a href="{{ url_for('quan_ly_to_chuc') }}">Quản lý Tổ chức</a>
+            {% endif %}
+        </div>
+        <div class="nav-right">
+            <span class="user-info">Chào, <strong>{{ session['username'] }}</strong> ({{ session['role'] }})</span>
+            <a href="{{ url_for('logout') }}">Đăng xuất</a>
+        </div>
+    </nav>
+    {% endif %}
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</body>
+</html>

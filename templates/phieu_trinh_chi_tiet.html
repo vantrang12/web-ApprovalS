@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết Phiếu trình #{{ submission.id }}{% endblock %}
+
+{% block content %}
+    <a href="{{ url_for('index') }}">&larr; Quay lại danh sách</a>
+    <div class="card">
+        <div class="card-header">
+            Chi tiết Phiếu trình #{{ submission.id }}
+        </div>
+        <div class="card-body">
+            <p><strong>Tổ chức:</strong> {{ submission.org_name }}</p>
+            <p><strong>Người tạo:</strong> {{ submission.creator_name }}</p>
+            <p><strong>Ngày tạo:</strong> {{ submission.created_at }}</p>
+            <p><strong>Trạng thái:</strong>
+                {% if submission.status == 'Chờ phê duyệt' %}
+                    <span class="status status-pending">{{ submission.status }}</span>
+                {% elif submission.status == 'Đã phê duyệt' %}
+                    <span class="status status-approved">{{ submission.status }}</span>
+                {% elif submission.status == 'Đã từ chối' %}
+                    <span class="status status-rejected">{{ submission.status }}</span>
+                {% endif %}
+            </p>
+            <hr>
+            <p><strong>Nội dung trình:</strong></p>
+            <div style="white-space: pre-wrap; background: #f9f9f9; padding: 15px; border-radius: 5px;">{{ submission.content }}</div>
+        </div>
+
+        {% if can_approve %}
+        <div class="card-footer" style="display: flex; gap: 10px;">
+            <form action="{{ url_for('action_phieu_trinh', id=submission.id, action='approve') }}" method="post" style="margin:0;">
+                <button type="submit" class="btn btn-success">Phê duyệt</button>
+            </form>
+            <form action="{{ url_for('action_phieu_trinh', id=submission.id, action='reject') }}" method="post" style="margin:0;">
+                <button type="submit" class="btn btn-danger">Từ chối</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

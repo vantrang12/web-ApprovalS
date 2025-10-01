@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng nhập - Approval{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Đăng nhập hệ thống</h2>
+    <hr>
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Tên đăng nhập</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Đăng nhập</button>
+    </form>
+</div>
+{% endblock %}
